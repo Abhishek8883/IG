@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../stylesheets/homepage.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <title>Home</title>
+</head>
+<body>
+    <div id="main">
+        <div id="overlay">
+            
+        </div>
+        
+
+
+        <!-- ----------navigation bar  =------------------>
+        <nav>
+            <div id="navLeft">
+                <div id="logo">
+                    <img src="https://cdn.pixabay.com/photo/2016/10/31/11/34/instagram-1785355__340.png">
+                </div>
+                <h1>Sasta Insta</h1>
+            </div>
+            <div id="navRight">
+                <span id="searchIcon"><i class="ri-search-2-line"></i></span>
+                <input type="text" placeholder="search" id="search">
+                <div id="createButton">
+                    <span id="createIcon"><i class="ri-add-box-line"></i></span>
+                    <a href="/getCreatePostPage">Create</a></div>
+                <a href="/logout"><div id="navProfilePic">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDE8e2fmWDDYo1tXgEs3a-2UTDEs8isDH2Rw&usqp=CAU">
+                </div>
+                </a>
+            </div>
+
+            <!-- box which appers when we search someting -->
+            <div id="searchBox">
+                    
+            </div>
+        </nav>
+
+        <!-------------- parent div which contain all the other part of the website -->
+        <div id="parent">
+
+
+            <!-- ---- left div which contains options menu -->
+            <div id="left">
+                <div id="userBox">
+                    <div class="profilePic">
+                        <img src="../images/profilePics/<%= founduser.profilePic[0] %>" >
+                    </div>
+                    <div id="userBoxRight">
+                        <h3><%= founduser.name %></h3>
+                        <h5><%= founduser.username %></h5>
+                    </div>
+                </div>
+
+                <!-- menubar -->
+                <div id="menu">
+                    <a href="/homepage"><div class="element miOne">
+                        <span class="menuIcon"><i class="ri-home-4-line"></i></span>
+                        <h4 >Home</h4>
+                    </div></a>
+
+                    <a href="/profile"><div class="element">
+                        <span class="menuIcon"><i class="ri-user-line"></i></span>
+                        <h4>Profile</h4>
+                    </div></a>
+
+                    <a href="/homepage"><div class="element">
+                        <span class="menuIcon"><i class="ri-user-add-line"></i></span>
+                        <h4>People</h4>
+                    </div></a>
+
+                    <a href="/createStoryPage"><div class="element">
+                        <span class="menuIcon"><i class="ri-article-line"></i></span>
+                        <h4>Stories</h4>
+                    </div></a>
+
+                    <a href="/logout"><div class="element" id="menuLastItem">
+                        <span class="menuIcon"><i class="ri-logout-box-r-line"></i></span>
+                        <h4>Logout</h4>
+                    </div></a>
+                </div>
+            </div>
+
+
+
+
+            <!-- ------ middle div which contains post  -->
+            <div id="middle">
+                <div id="middleTop">
+                    <% if(allStory.length>0){ %>
+                        <% allStory.forEach(function(val,ind){  %>
+                    <div  class="storyBox">
+                    <div  class="storyCircle">
+                        <img id="<%=ind %>" src="../images/story/<%= val.image[0] %>" >
+                    </div> 
+                    <h6><%= val.author.username %></h6>
+                    </div>
+                    <% }) %>
+                    <% }else{ %>
+                        <center><h1>No items</h1></center>
+                    <% } %>
+                </div>
+
+                <div id="feedBox">
+                    <% if(allPost.length>0){ %>
+                    <% allPost.forEach(function(val){  %>
+                    <div class="feeds">
+                        <div class="feedTop">
+                            <div class="feedProfilePic">
+                                <img src="../images/profilePics/<%= val.author.profilePic[0] %>" alt="">
+                            </div>
+                            <div class="feedCreator">
+                                <h3><%= val.author.username %></h3>
+                                <h6><%= val.date %></h6>
+                            </div>
+                        </div>
+
+                        <p><%= val.content %></p>
+                           <% if(val.image.length>0){ %> 
+                        <div class="feedImage">
+                            <img src="../upload/<%= val.image[0] %>" alt="">
+                        </div>
+                        <% } %>
+
+                        <!-- icons -->
+                        <div class="feedIcons">
+                            <% if(val.likes.length>0){ %>
+                            <a href="/likes/<%= val._id%>" ><span id="likeIcon" style="color: red   ;"><i class="ri-heart-fill"></i></span></a>
+                            <% }else{ %>
+                                <a href="/likes/<%= val._id%>" ><span id="likeIcon"><i class="ri-heart-line"></i></span></a>
+                                <% } %>
+                            <a href="/getCommentPage/<%= val._id%>">
+                                <i class="ri-chat-1-line"></i>
+                            </a>
+                            <a href="#">
+                                <i class="ri-share-line"></i>
+                            </a>
+                        </div>
+
+                        <!-- likes and comments -->
+                        <h6 id="likesCount"><%= val.likes.length %> Likes</h6>
+
+                    </div>
+                    <% }) %>
+                    <% }else{ %>
+                        <center><h1>No items</h1></center>
+                    <% } %>
+                    
+                </div>
+            </div>
+
+            <!-- ---- - right div which contains friend suggestions and friend request   -->
+            <div id="right">
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js" integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="../javascripts/homepage.js"></script>
+</body>
+</html>
